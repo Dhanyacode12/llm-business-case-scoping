@@ -9,4 +9,6 @@ Scoping documents from the *Applied LLMs for Business Cases* exercise. The goal 
 
 Each document has six sections: Problem Clarification, Problem Type, Data Science Scope, Modeling Approach, Use of LLMs (Reflection), and Unknown Methods Discovery.
 
-> Status: sections 1–4 drafted; sections 5–6 are placeholders to be completed from my own LLM working sessions.
+Presentation notes (about 3–4 minutes per scenario): [presentation-talking-points.md](presentation-talking-points.md)
+
+> Status: all six sections are complete for both scenarios.
