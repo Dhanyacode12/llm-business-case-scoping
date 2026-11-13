@@ -19,9 +19,17 @@
 - There are no clean labels and no agreed categories.
 - So: unsupervised first, to discover the categories. Then classification, once labels exist.
 
-**Data and risks (30 sec)**
-- Ticket text, timestamps, routing history, reply times.
-- Risks: inconsistent routing, label noise, personal data, rare but critical tickets.
+**Data and risks (60 sec)**
+- What data exists: ticket text (subject and body), timestamps, channel, customer details, routing history, agent replies, response and resolution times.
+- The main data is text. One row is one ticket.
+- Labels: there are none I can trust. The only hints are where a ticket ended up after reassignments, tags agents already add, and resolution time.
+- Realistic plan: label a few hundred tickets by hand, with an LLM suggesting first.
+- Risk 1, label noise: manual routing is inconsistent. A model trained on it copies the inconsistency.
+- Risk 2, leakage: agent replies and tags added after triage must not be used as inputs.
+- Risk 3, rare critical tickets: outages, legal, security. These are few, but missing one is costly.
+- Risk 4, change over time: new products and incidents change what tickets are about. Volume also spikes at certain times.
+- Risk 5, personal data: tickets contain it. Processing may need to stay local.
+- Risk 6, messy text: typos, mixed languages, pasted logs.
 
 **Approach (45 sec)**
 - Group similar tickets, then have support leads name the groups.
@@ -53,9 +61,16 @@
 - Mostly not ML: splitting a change into its parts, plus checks for unusual movement.
 - The LLM only writes up numbers that were calculated.
 
-**Data and risks (30 sec)**
-- KPI time series, breakdowns by region and segment, metric definitions.
-- Risks: inconsistent metric definitions, noise read as signal, invented explanations, over-trust.
+**Data and risks (60 sec)**
+- What data exists: KPI numbers over time (daily or weekly), breakdowns by region, segment, channel and product, metric definitions, and calendars of releases, campaigns and holidays.
+- Labels: none for "the reason for a change". Past analyst comments can show writing style, but they are not proof.
+- Risk 1, unclear definitions: teams may define "active users" differently. Automating on that spreads confusion faster.
+- Risk 2, noise read as signal: weekly numbers move up and down. Most changes are not meaningful.
+- Risk 3, mix shift: a number can move because the mix of customers changed, not because behaviour changed.
+- Risk 4, false explanations: if you check many breakdowns, some will look important by chance.
+- Risk 5, timing: seasons, holidays, outages, and late or corrected data.
+- Risk 6, the LLM: it can write fluent reasons that are not supported by the data.
+- Risk 7, over-trust: a polished explanation looks more certain than it is.
 
 **Approach (45 sec)**
 - Split each change by region and segment.
