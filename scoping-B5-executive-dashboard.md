@@ -52,17 +52,13 @@
 
 ## 5. Use of LLMs (Reflection)
 
-> *To be written from my real working session with an LLM. Do not fill with invented content.*
-
-- **How I used an LLM in this task:** TODO
-- **One example where it clarified my thinking:** TODO
-- **One example where I challenged, corrected, or refined its output:** TODO
+- **How I used an LLM in this task:** I did not use an LLM before writing the first draft of this scoping document; my LLM use started afterwards. I used Claude to discuss the draft's main ideas: that most of this scenario is arithmetic and not machine learning, that a dashboard can show what changed but not prove why, and that the AI should only write up numbers that were calculated. I answered its questions and it challenged my answers.
+- **One example where it clarified my thinking:** Before this discussion I thought a dashboard explaining a change meant telling executives the actual results and the cause. The discussion showed me that a dashboard can show what changed, and can mention things that happened at the same time, but it cannot prove why. It also showed me that the wording of a warning matters, because small warnings get ignored, and a sentence containing "because" will be read as a cause even if a warning follows it.
+- **One example where I challenged, corrected, or refined its output:** The LLM compared two ways to present a result: "Sales fell because the campaign ended (this is not confirmed)" and a longer version without "because". I chose the second, since it doesn't claim a cause, but I shortened it for busy readers: "Sales fell 8%. We haven't tested whether the campaign caused it." The LLM pointed out that my shorter version loses why the campaign is mentioned at all (the timing), and suggested keeping a short sentence about it. I adopted that suggestion, so my final wording is: "Sales fell 8%. The campaign ended the same week. We haven't tested whether it caused the drop."
 
 ## 6. Unknown Methods Discovery
 
-> *To be written from what I actually learn. Candidates: change-point detection, rate/mix (Kitagawa–Oaxaca-style) decomposition, Shapley-value attribution.*
-
-- **Technique I did not previously know:** TODO
-- **Why it is relevant here:** TODO
-- **Explained in my own words:** TODO
-- **An incorrect assumption I had, and how it was corrected:** TODO
+- **Technique I did not previously know:** Rate/mix decomposition (also known in its formal version as Kitagawa–Oaxaca-style decomposition).
+- **Why it is relevant here:** Executives want weekly KPI changes explained. A total can fall for different reasons, and each reason calls for a different response. This technique splits the change into its parts, using plain arithmetic, so the dashboard can show which part is which instead of guessing.
+- **Explained in my own words:** A number can go down for two reasons. The first is rate: in each group, such as each city, people bought less than before. The second is mix: people's buying habits did not change, but fewer customers were in the group that usually buys more. The technique works out how much of the total change comes from each reason.
+- **An incorrect assumption I had, and how it was corrected:** I thought that when a number drops, customers must have changed their behaviour. That is only one of the two possible reasons. The drop can also come from a change in the mix of customers, with no change in anyone's behaviour. This matters because the two reasons lead to different actions, so the dashboard should check both before suggesting what happened.
