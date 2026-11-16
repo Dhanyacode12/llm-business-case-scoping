@@ -62,9 +62,9 @@ Now, what I learned in this scenario.
 
 I used Claude as a thinking partner. First to understand the use case, and then to discuss a draft of my scoping document.
 
-Here is one place where it clarified my thinking. I had assumed that the routing history would make a good training set, because it is large and the agents are experienced. Claude pointed out that this depends on how consistent the labels are, and that I can measure it. Two experienced agents route the same hundred tickets independently, and we compare. If they agree most of the time, the history is usable. If not, a model would just learn their disagreement. So an opinion became a test.
+Here is the first thing. I assumed that the routing history, the old record of where each ticket was sent, would make a good set of correct answers for a model, because it is large and the support staff are experienced. Claude pointed out that people sorted those tickets by hand, so the records may not be consistent. So I changed my plan: before using them, I would test them. Two experienced support staff, who are humans, each sort the same hundred tickets alone, and we compare how often they agree. If they agree most of the time, the history is usable. If not, a model would just learn their disagreement. So an opinion became a test.
 
-Here is one place where I challenged the LLM. It suggested that an LLM could label a sample of tickets with a fixed list of categories. I found that shaky, because an LLM might force tickets into categories that do not describe the real problem. We discussed it, and we also found that human reviewers tend to just accept the suggestion. So I added the "other" option and the blind labelling.
+Here is the second thing. Claude suggested that an LLM could label a sample of tickets using a fixed list of categories. I found that shaky, because the LLM might force tickets into categories that do not describe the real problem. So I changed the plan again. We added an "other" option for tickets that fit nowhere. And we added blind labelling: some tickets are labelled by a person who has not seen the LLM's suggestion, because people tend to just accept a suggestion when they see one.
 
 The new method I learned is called BERTopic with HDBSCAN. In simple words: first, embeddings turn each ticket into numbers, so that tickets with similar meaning are close together. Then HDBSCAN groups the close tickets, and it leaves out the ones that do not fit anywhere. Then BERTopic names each group with its most common words, and a person decides the final name.
 
@@ -112,9 +112,9 @@ What I would not do: ask an LLM to explain raw data, or claim a cause without an
 
 Now, what I learned here. I want to be honest: I did not use an LLM for the first draft of this document. I used Claude afterwards to discuss it.
 
-It clarified my thinking in this way. I used to think that a dashboard explaining a change means telling executives the cause. Now I understand that a dashboard can show what changed, and mention what happened at the same time, but it cannot prove why.
+I started with an assumption: a dashboard that explains a change should tell executives the cause. Through the discussion I understood that a dashboard can show what changed, and mention what happened at the same time, but it cannot prove why. So I changed how the dashboard should speak.
 
-We looked at wording. One version said, "Sales fell because the campaign ended." The word "because" claims a cause. So I chose a version without it. I shortened it, and Claude pointed out that my short version lost the timing. The final sentence is on the slide: "Sales fell 8%. The campaign ended the same week. We haven't tested whether it caused the drop."
+That led us to look at the wording. One version said, "Sales fell because the campaign ended." The word "because" claims a cause. So I chose a version without it. I shortened it, and Claude pointed out that my short version lost the timing. The final sentence is on the slide: "Sales fell 8%. The campaign ended the same week. We haven't tested whether it caused the drop."
 
 The new method I learned is rate and mix decomposition. A number can fall for two reasons. The rate: people buy less in each group. Or the mix: people behave the same, but fewer customers are in the group that usually buys more. The technique works out how much of the change comes from each.
 

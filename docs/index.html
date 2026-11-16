@@ -103,7 +103,7 @@
   <h2 class="title">An assumption became a test</h2>
   <div class="row">
     <div class="card"><h3 class="card-title">Working with the LLM</h3>
-      <ul class="list"><li>I assumed routing history made good labels</li><li>Test: two agents route the same 100 tickets</li><li>I challenged LLM labelling: it may force wrong categories, so I added “other” and blind labelling</li></ul></div>
+      <ul class="list"><li>I assumed the old routing records were correct → so I plan to test it: two support staff sort the same 100 tickets</li><li>I worried the LLM would force tickets into wrong categories → so I added “other” and labelling without its suggestion</li></ul></div>
     <div class="card"><h3 class="card-title">New method: BERTopic + HDBSCAN</h3>
       <ul class="list"><li>Embeddings turn text into numbers</li><li>HDBSCAN groups similar tickets and leaves odd ones out</li><li>BERTopic names the groups</li><li>My wrong assumption: clustering is not classification</li></ul></div>
   </div>
@@ -147,7 +147,7 @@
   <h2 class="title">A dashboard can show what changed, not prove why</h2>
   <div class="row">
     <div class="card"><h3 class="card-title">Working with the LLM</h3>
-      <p class="card-text">I thought a dashboard should tell executives the cause. We settled on this wording:</p>
+      <p class="card-text">I assumed a dashboard should tell executives the cause → but it can only show what changed, so we avoid “because”. Final wording:</p>
       <p class="quote">“Sales fell 8%. The campaign ended the same week. We haven’t tested whether it caused the drop.”</p></div>
     <div class="card"><h3 class="card-title">New method: rate/mix</h3>
       <ul class="list"><li>Rate: people buy less in each group</li><li>Mix: the customer mix shifted</li><li>My wrong assumption: a drop means behaviour changed</li></ul></div>
@@ -162,7 +162,6 @@
     <li>B5: mostly not ML; the LLM only writes up calculated numbers</li>
     <li>In both, decide what is really being asked before building anything</li>
   </ul>
-  <p class="lead">Questions?</p>
 </section>
 
 </div>
