@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM Business Case Scoping: A3 and B5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@400;600&display=swap">
+<style>
+  :root {
+    --ink: #172033; --paper: #F7F5F0; --paper2: #ECE8DF; --card: #FDFCF9;
+    --accent: #B4531A; --accent-dk: #F0A06A; --mute: #4A5568; --mute-dk: #C9D1DE; --card-dk: #22304A;
+  }
+  @media (prefers-color-scheme: dark) { html { color-scheme: dark; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #0d1320; font-family: 'Inter', Arial, sans-serif; overflow: hidden; }
+  #viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+  #stage { width: 1920px; height: 1080px; position: relative; transform-origin: center center; flex: none; }
+  section { position: absolute; inset: 0; padding: 128px; background: var(--paper); color: var(--ink);
+    display: none; flex-direction: column; gap: 40px; }
+  section.active { display: flex; }
+  section.tint { background: var(--paper2); }
+  section.dark { background: var(--ink); color: var(--paper); }
+  section.center { justify-content: center; }
+  h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0; }
+  p { margin: 0; }
+  ul { margin: 0; padding-left: 36px; }
+  .eyebrow { font-size: 28px; font-weight: 600; color: var(--accent); letter-spacing: 2px; }
+  .dark .eyebrow { color: var(--accent-dk); }
+  .title { font-size: 64px; font-weight: 600; line-height: 1.1; }
+  .cover-title { font-size: 112px; font-weight: 600; line-height: 1.05; }
+  .lead { font-size: 36px; line-height: 1.35; color: var(--mute); }
+  .dark .lead { color: var(--mute-dk); }
+  .row { display: flex; gap: 40px; }
+  .card { flex: 1; background: var(--card); border-radius: 16px; padding: 36px; display: flex; flex-direction: column; gap: 16px; }
+  .dark .card { background: var(--card-dk); }
+  .card-title { font-size: 40px; font-weight: 600; line-height: 1.15; }
+  .card-text { font-size: 30px; line-height: 1.4; }
+  .list { font-size: 30px; line-height: 1.45; }
+  .list li + li { margin-top: 8px; }
+  .num { font-size: 28px; font-weight: 600; color: var(--accent); }
+  .dark .num { color: var(--accent-dk); }
+  .note { font-size: 30px; line-height: 1.4; color: var(--mute); }
+  .dark .note { color: var(--mute-dk); }
+  .quote { font-size: 34px; line-height: 1.35; font-weight: 600; }
+  #hud { position: fixed; bottom: 14px; left: 0; right: 0; display: flex; justify-content: center; gap: 12px;
+    align-items: center; font-size: 14px; color: #c9d1de; z-index: 5; }
+  #hud button { background: #22304a; color: #f7f5f0; border: 0; border-radius: 8px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
+  #hud button:hover { background: #2f4266; }
+  #hud button:focus-visible { outline: 2px solid #f0a06a; outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div id="viewport">
+<div id="stage">
+
+<section class="dark center">
+  <p class="eyebrow">APPLIED LLMS FOR BUSINESS CASES</p>
+  <h1 class="cover-title">Scoping vague “use AI” requests</h1>
+  <p class="lead">Two scenarios: A3 Support Ticket Overload and B5 Executive Dashboard Automation</p>
+</section>
+
+<section>
+  <p class="eyebrow">A3 · SUPPORT TICKET OVERLOAD</p>
+  <h2 class="title">Help staff route tickets faster, not replace them</h2>
+  <div class="row">
+    <div class="card"><h3 class="card-title">The problem</h3>
+      <p class="card-text">Tickets arrive as free text and are routed by hand. Goal: route and prioritise faster, so response time drops.</p></div>
+    <div class="card"><h3 class="card-title">First check, no ML</h3>
+      <p class="card-text">Where is time really lost: triage, the right team, or resolution? If routing isn’t the bottleneck, a routing model won’t help.</p></div>
+    <div class="card"><h3 class="card-title">Problem type</h3>
+      <p class="card-text">No clean labels, no agreed categories. Unsupervised first to discover categories, then classification.</p></div>
+  </div>
+</section>
+
+<section class="tint">
+  <p class="eyebrow">A3 · DATA AND RISKS</p>
+  <h2 class="title">The data exists, but the labels can’t be trusted</h2>
+  <div class="row">
+    <div class="card"><h3 class="card-title">What we have</h3>
+      <ul class="list"><li>Ticket text, timestamps, customer details</li><li>Routing history and agent replies</li><li>Response and resolution times</li><li>Labels: none we can trust</li></ul></div>
+    <div class="card"><h3 class="card-title">Top risks</h3>
+      <ul class="list"><li>Label noise: manual routing is inconsistent</li><li>Leakage: agent replies must not be inputs</li><li>Rare critical tickets: outages, legal, security</li></ul></div>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">A3 · APPROACH</p>
+  <h2 class="title">Discover categories first, then classify</h2>
+  <div class="row">
+    <div class="card"><p class="num">1</p><h3 class="card-title">Group</h3>
+      <p class="card-text">Group similar tickets. Support leads name the groups.</p></div>
+    <div class="card"><p class="num">2</p><h3 class="card-title">Label</h3>
+      <p class="card-text">An LLM suggests labels on a sample. Humans review, with an “other” option and some blind labelling.</p></div>
+    <div class="card"><p class="num">3</p><h3 class="card-title">Assist</h3>
+      <p class="card-text">Show agents similar past tickets.</p></div>
+  </div>
+  <p class="note">Not doing: LLM auto-replies before triage is proven, or trusting the routing history as labels before testing it.</p>
+</section>
+
+<section class="dark">
+  <p class="eyebrow">A3 · WHAT I LEARNED</p>
+  <h2 class="title">An assumption became a test</h2>
+  <div class="row">
+    <div class="card"><h3 class="card-title">Working with the LLM</h3>
+      <ul class="list"><li>I assumed routing history made good labels</li><li>Test: two agents route the same 100 tickets</li><li>I challenged LLM labelling: it may force wrong categories, so I added “other” and blind labelling</li></ul></div>
+    <div class="card"><h3 class="card-title">New method: BERTopic + HDBSCAN</h3>
+      <ul class="list"><li>Embeddings turn text into numbers</li><li>HDBSCAN groups similar tickets and leaves odd ones out</li><li>BERTopic names the groups</li><li>My wrong assumption: clustering is not classification</li></ul></div>
+  </div>
+</section>
+
+<section class="tint">
+  <p class="eyebrow">B5 · EXECUTIVE DASHBOARD AUTOMATION</p>
+  <h2 class="title">“Explain a KPI change” can mean three things</h2>
+  <div class="row">
+    <div class="card"><p class="num">FEASIBLE</p><h3 class="card-title">Describe</h3><p class="card-text">What changed, and where.</p></div>
+    <div class="card"><p class="num">FEASIBLE</p><h3 class="card-title">Flag</h3><p class="card-text">Is the change unusual, or normal variation?</p></div>
+    <div class="card"><p class="num">NOT FROM A DASHBOARD</p><h3 class="card-title">Prove why</h3><p class="card-text">Needs an experiment or a causal design.</p></div>
+  </div>
+  <p class="note">So this is mostly not ML. The LLM only writes up numbers that were calculated.</p>
+</section>
+
+<section>
+  <p class="eyebrow">B5 · DATA AND RISKS</p>
+  <h2 class="title">The danger is a confident, wrong explanation</h2>
+  <div class="row">
+    <div class="card"><h3 class="card-title">What we have</h3>
+      <ul class="list"><li>KPI numbers over time</li><li>Breakdowns by region, segment, channel</li><li>Metric definitions, campaign and holiday calendars</li><li>Labels: none for “the reason”</li></ul></div>
+    <div class="card"><h3 class="card-title">Top risks</h3>
+      <ul class="list"><li>Unclear definitions across teams</li><li>Noise read as signal</li><li>Mix shift looks like behaviour change</li><li>The LLM invents fluent reasons</li></ul></div>
+  </div>
+</section>
+
+<section class="tint">
+  <p class="eyebrow">B5 · APPROACH</p>
+  <h2 class="title">Calculate first, then let the LLM write</h2>
+  <div class="row">
+    <div class="card"><p class="num">1</p><h3 class="card-title">Split</h3><p class="card-text">Break each change down by region and segment.</p></div>
+    <div class="card"><p class="num">2</p><h3 class="card-title">Compare</h3><p class="card-text">Check against normal seasonal variation.</p></div>
+    <div class="card"><p class="num">3</p><h3 class="card-title">Write</h3><p class="card-text">The LLM turns verified numbers into plain text.</p></div>
+  </div>
+  <p class="note">Not doing: asking an LLM to explain raw data, or claiming a cause without an experiment.</p>
+</section>
+
+<section class="dark">
+  <p class="eyebrow">B5 · WHAT I LEARNED</p>
+  <h2 class="title">A dashboard can show what changed, not prove why</h2>
+  <div class="row">
+    <div class="card"><h3 class="card-title">Working with the LLM</h3>
+      <p class="card-text">I thought a dashboard should tell executives the cause. We settled on this wording:</p>
+      <p class="quote">“Sales fell 8%. The campaign ended the same week. We haven’t tested whether it caused the drop.”</p></div>
+    <div class="card"><h3 class="card-title">New method: rate/mix</h3>
+      <ul class="list"><li>Rate: people buy less in each group</li><li>Mix: the customer mix shifted</li><li>My wrong assumption: a drop means behaviour changed</li></ul></div>
+  </div>
+</section>
+
+<section class="dark center">
+  <p class="eyebrow">THE SHARED LESSON</p>
+  <h2 class="title">The main work was framing</h2>
+  <ul class="list">
+    <li>A3: ML fits, but start by discovering categories</li>
+    <li>B5: mostly not ML; the LLM only writes up calculated numbers</li>
+    <li>In both, decide what is really being asked before building anything</li>
+  </ul>
+  <p class="lead">Questions?</p>
+</section>
+
+</div>
+</div>
+
+<div id="hud">
+  <button id="prev" aria-label="Previous slide">← Back</button>
+  <span id="count" aria-live="polite"></span>
+  <button id="next" aria-label="Next slide">Next →</button>
+  <button id="full" aria-label="Toggle full screen">Full screen</button>
+</div>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('#stage section'));
+  var stage = document.getElementById('stage');
+  var count = document.getElementById('count');
+  var i = 0;
+  try { var saved = parseInt(location.hash.replace('#', ''), 10); if (saved >= 1 && saved <= slides.length) i = saved - 1; } catch (e) {}
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) { s.classList.toggle('active', k === i); });
+    count.textContent = (i + 1) + ' / ' + slides.length;
+    try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+  }
+  function fit() {
+    var s = Math.min(window.innerWidth / 1920, (window.innerHeight - 48) / 1080);
+    stage.style.transform = 'scale(' + s + ')';
+    stage.style.margin = (-(1080 * (1 - s)) / 2) + 'px ' + (-(1920 * (1 - s)) / 2) + 'px';
+  }
+  document.getElementById('prev').onclick = function () { show(i - 1); };
+  document.getElementById('next').onclick = function () { show(i + 1); };
+  document.getElementById('full').onclick = function () {
+    if (!document.fullscreenElement) { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); }
+    else { document.exitFullscreen && document.exitFullscreen(); }
+  };
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); show(i + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === 'f' || e.key === 'F') { document.getElementById('full').click(); }
+  });
+  var startX = null;
+  document.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (startX === null) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1));
+    startX = null;
+  });
+  window.addEventListener('resize', fit);
+  fit(); show(i);
+})();
+</script>
+</body>
+</html>
