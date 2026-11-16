@@ -9,6 +9,8 @@ Scoping documents from the *Applied LLMs for Business Cases* exercise. The goal 
 
 Each document has six sections: Problem Clarification, Problem Type, Data Science Scope, Modeling Approach, Use of LLMs (Reflection), and Unknown Methods Discovery.
 
-Presentation notes (about 3–4 minutes per scenario): [presentation-talking-points.md](presentation-talking-points.md)
+**Slides:** https://dhanyacode12.github.io/llm-business-case-scoping/ (arrow keys or the buttons to move; `F` for full screen)
+
+Presentation material: [full script](presentation-script.md) · [short talking points](presentation-talking-points.md)
 
 > Status: all six sections are complete for both scenarios.
